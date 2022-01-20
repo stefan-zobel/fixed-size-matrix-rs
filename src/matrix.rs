@@ -7,8 +7,6 @@ pub trait Arithmetic<T>:
     Sized
     + Add<Output = T>
     + AddAssign
-    + Div<Output = T>
-    + DivAssign
     + Mul<Output = T>
     + MulAssign
     + Neg<Output = T>
@@ -20,8 +18,6 @@ pub trait Arithmetic<T>:
 impl<
         T: Add<Output = T>
             + AddAssign
-            + Div<Output = T>
-            + DivAssign
             + Mul<Output = T>
             + MulAssign
             + Neg<Output = T>
