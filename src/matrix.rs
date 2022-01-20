@@ -63,7 +63,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS
 }
 
 // Matrix Factory
-pub(crate) struct MF<T: Numeric, const ROWS: usize, const COLS: usize> {
+pub struct MF<T: Numeric, const ROWS: usize, const COLS: usize> {
     phantom: PhantomData<T>,
 }
 
