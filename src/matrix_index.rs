@@ -158,4 +158,59 @@ mod index_tests {
         println!("e1[0][0] = {}", elem1);
         println!("e2[0][0] = {}", elem2);
     }
+
+    #[test]
+    fn test_one_index_assign() {
+        let row = [9.5f64; 10];
+        let mut a = MF::<f64, 10, 10>::new_stack();
+        let mut b = MF::<f64, 10, 10>::new_heap();
+        a[0] = row;
+        b[0] = row;
+        let row1 = a[0];
+        let row2 = b[0];
+        println!("row after assign = {:?}", row1);
+        println!("row after assign = {:?}", row2);
+        // mutable ref
+        let mut c1 = &mut MF::<f64, 10, 10>::new_stack();
+        let mut c2 = &mut MF::<f64, 10, 10>::new_heap();
+        c1[0] = row;
+        c2[0] = row;
+        let row1 = c1[0];
+        let row2 = c2[0];
+        println!("row1 = {:?}", row1);
+        println!("row2 = {:?}", row2);
+        // shared ref
+        // this doesn't work by design
+        /*
+        let mut b1 = &MF::<f64, 10, 10>::new_stack();
+        let mut b2 = &MF::<f64, 10, 10>::new_heap();
+        b1[0] = row;
+        b2[0] = row;
+        let row1 = b1[0];
+        let row2 = b2[0];
+        println!("row1 = {:?}", row1);
+        println!("row2 = {:?}", row2);
+        */
+    }
+
+    #[test]
+    fn test_two_indices_assign() {
+        let mut a = MF::<f64, 10, 10>::new_stack();
+        let mut b = MF::<f64, 10, 10>::new_heap();
+        a[0][0] = 199.99;
+        b[0][0] = 199.99;
+        let elem1 = a[0][0];
+        let elem2 = a[0][0];
+        println!("e1 - a[0][0] = {}", elem1);
+        println!("e2 - a[0][0] = {}", elem2);
+        // mutable ref
+        let mut c1 = &mut MF::<f64, 10, 10>::new_stack();
+        let mut c2 = &mut MF::<f64, 10, 10>::new_heap();
+        c1[0][0] = 199.99;
+        c2[0][0] = 199.99;
+        let elem1 = c1[0][0];
+        let elem2 = c2[0][0];
+        println!("e1[0][0] = {}", elem1);
+        println!("e2[0][0] = {}", elem2);
+    }
 }
