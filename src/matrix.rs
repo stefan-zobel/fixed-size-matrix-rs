@@ -3,22 +3,41 @@
 use std::marker::PhantomData;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-pub trait Numeric:
-    Copy + Default + Add + AddAssign + Div + DivAssign + Mul + MulAssign + Neg + Sub + SubAssign
+pub trait Arithmetic<T>:
+    Sized
+    + Add<Output = T>
+    + AddAssign
+    + Div<Output = T>
+    + DivAssign
+    + Mul<Output = T>
+    + MulAssign
+    + Neg<Output = T>
+    + Sub<Output = T>
+    + SubAssign
 {
 }
 
-impl Numeric for f32 {}
-impl Numeric for f64 {}
-impl Numeric for i8 {}
-impl Numeric for i16 {}
-impl Numeric for i32 {}
-impl Numeric for i64 {}
-impl Numeric for i128 {}
+impl<
+        T: Add<Output = T>
+            + AddAssign
+            + Div<Output = T>
+            + DivAssign
+            + Mul<Output = T>
+            + MulAssign
+            + Neg<Output = T>
+            + Sub<Output = T>
+            + SubAssign,
+    > Arithmetic<T> for T
+{
+}
+
+pub trait Numeric<T>: Copy + Default + Arithmetic<T> {}
+
+impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 
 /// A Matrix allocated on the stack
 #[derive(Debug, Clone)]
-pub struct SMatrix<T: Numeric, const ROWS: usize, const COLS: usize> {
+pub struct SMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     #[allow(unused)]
     rows: usize,
     #[allow(unused)]
@@ -28,7 +47,7 @@ pub struct SMatrix<T: Numeric, const ROWS: usize, const COLS: usize> {
 
 /// A Matrix allocated on the heap
 #[derive(Debug, Clone)]
-pub struct HMatrix<T: Numeric, const ROWS: usize, const COLS: usize> {
+pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     #[allow(unused)]
     rows: usize,
     #[allow(unused)]
@@ -37,7 +56,7 @@ pub struct HMatrix<T: Numeric, const ROWS: usize, const COLS: usize> {
 }
 
 // Array access SMatrix
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS> {
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS> {
     #[inline]
     pub(crate) fn array(&'a self) -> &'a [[T; COLS]; ROWS] {
         &self.a
@@ -50,7 +69,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS
 }
 
 // Array access HMatrix
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS> {
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS> {
     #[inline]
     pub(crate) fn array(&'a self) -> &'a [[T; COLS]; ROWS] {
         self.a.as_ref()
@@ -63,11 +82,11 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS
 }
 
 // Matrix Factory
-pub struct MF<T: Numeric, const ROWS: usize, const COLS: usize> {
+pub struct MF<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     phantom: PhantomData<T>,
 }
 
-impl<T: Numeric, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     #[inline]
     pub fn new_stack() -> SMatrix<T, ROWS, COLS> {
         SMatrix {

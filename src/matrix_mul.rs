@@ -1,16 +1,19 @@
 //! Mul implementations
 
 use crate::matrix::*;
-use std::ops::{Add, Mul};
+use std::ops::Mul;
 
 #[inline]
-pub(crate) fn multiply<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>(
+pub(crate) fn multiply<
+    T: Numeric<T>,
+    const ROWS_LEFT: usize,
+    const COLS_LEFT: usize,
+    const COLS_RIGHT: usize,
+>(
     a: &[[T; COLS_LEFT]; ROWS_LEFT],
     b: &[[T; COLS_RIGHT]; COLS_LEFT],
     c: &mut [[T; COLS_RIGHT]; ROWS_LEFT],
-) where
-    T: Mul<Output = T> + Add<Output = T>,
-{
+) {
     for row_a in 0..ROWS_LEFT {
         for col_b in 0..COLS_RIGHT {
             for col_a in 0..COLS_LEFT {
@@ -21,10 +24,8 @@ pub(crate) fn multiply<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usiz
 }
 
 // 1) SMatrix * SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<SMatrix<T, COLS_LEFT, COLS_RIGHT>> for SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = SMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -38,10 +39,8 @@ where
 }
 
 // 2) SMatrix * &SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&SMatrix<T, COLS_LEFT, COLS_RIGHT>> for SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = SMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -55,10 +54,8 @@ where
 }
 
 // 3) &SMatrix * SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = SMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -72,10 +69,8 @@ where
 }
 
 // 4) &SMatrix * &SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = SMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -89,10 +84,8 @@ where
 }
 
 // 5) SMatrix * HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<HMatrix<T, COLS_LEFT, COLS_RIGHT>> for SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -106,10 +99,8 @@ where
 }
 
 // 6) SMatrix * &HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&HMatrix<T, COLS_LEFT, COLS_RIGHT>> for SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -123,10 +114,8 @@ where
 }
 
 // 7) &SMatrix * HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -140,10 +129,8 @@ where
 }
 
 // 8) &SMatrix * &HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &SMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -157,10 +144,8 @@ where
 }
 
 // 9) HMatrix * HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<HMatrix<T, COLS_LEFT, COLS_RIGHT>> for HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -174,10 +159,8 @@ where
 }
 
 // 10) HMatrix * &HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&HMatrix<T, COLS_LEFT, COLS_RIGHT>> for HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -191,10 +174,8 @@ where
 }
 
 // 11) &HMatrix * HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -208,10 +189,8 @@ where
 }
 
 // 12) &HMatrix * &HMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -225,10 +204,8 @@ where
 }
 
 // 13) HMatrix * SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<SMatrix<T, COLS_LEFT, COLS_RIGHT>> for HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -242,10 +219,8 @@ where
 }
 
 // 14) HMatrix * &SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&SMatrix<T, COLS_LEFT, COLS_RIGHT>> for HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -259,10 +234,8 @@ where
 }
 
 // 15) &HMatrix * SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 
@@ -276,10 +249,8 @@ where
 }
 
 // 16) &HMatrix * &SMatrix
-impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &HMatrix<T, ROWS_LEFT, COLS_LEFT>
-where
-    T: Mul<Output = T> + Add<Output = T>,
 {
     type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
 

@@ -4,7 +4,7 @@ use crate::matrix::*;
 use std::ops::{Index, IndexMut};
 
 // A1) Index for SMatrix
-impl<T: Numeric, const ROWS: usize, const COLS: usize> Index<usize> for SMatrix<T, ROWS, COLS> {
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Index<usize> for SMatrix<T, ROWS, COLS> {
     type Output = [T; COLS];
 
     #[inline]
@@ -14,7 +14,9 @@ impl<T: Numeric, const ROWS: usize, const COLS: usize> Index<usize> for SMatrix<
 }
 
 // A1-Mut) IndexMut for SMatrix
-impl<T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize> for SMatrix<T, ROWS, COLS> {
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> IndexMut<usize>
+    for SMatrix<T, ROWS, COLS>
+{
     #[inline]
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.array_mut()[index]
@@ -22,7 +24,7 @@ impl<T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize> for SMatr
 }
 
 // A2) Index for &SMatrix (shared)
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> Index<usize>
     for &'a SMatrix<T, ROWS, COLS>
 {
     type Output = [T; COLS];
@@ -34,7 +36,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
 }
 
 // A3) Index for &mut SMatrix (exclusive)
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> Index<usize>
     for &'a mut SMatrix<T, ROWS, COLS>
 {
     type Output = [T; COLS];
@@ -46,7 +48,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
 }
 
 // A3-Mut) IndexMut for &mut SMatrix (exclusive)
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize>
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> IndexMut<usize>
     for &'a mut SMatrix<T, ROWS, COLS>
 {
     #[inline]
@@ -56,7 +58,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize>
 }
 
 // B1) Index for HMatrix
-impl<T: Numeric, const ROWS: usize, const COLS: usize> Index<usize> for HMatrix<T, ROWS, COLS> {
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Index<usize> for HMatrix<T, ROWS, COLS> {
     type Output = [T; COLS];
 
     #[inline]
@@ -66,7 +68,9 @@ impl<T: Numeric, const ROWS: usize, const COLS: usize> Index<usize> for HMatrix<
 }
 
 // B1-Mut) IndexMut for HMatrix
-impl<T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize> for HMatrix<T, ROWS, COLS> {
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> IndexMut<usize>
+    for HMatrix<T, ROWS, COLS>
+{
     #[inline]
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.array_mut()[index]
@@ -74,7 +78,7 @@ impl<T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize> for HMatr
 }
 
 // B2) Index for &HMatrix (shared)
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> Index<usize>
     for &'a HMatrix<T, ROWS, COLS>
 {
     type Output = [T; COLS];
@@ -86,7 +90,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
 }
 
 // B3) Index for &mut HMatrix (exclusive)
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> Index<usize>
     for &'a mut HMatrix<T, ROWS, COLS>
 {
     type Output = [T; COLS];
@@ -98,7 +102,7 @@ impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> Index<usize>
 }
 
 // B3-Mut) IndexMut for &mut HMatrix (exclusive)
-impl<'a, T: Numeric, const ROWS: usize, const COLS: usize> IndexMut<usize>
+impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> IndexMut<usize>
     for &'a mut HMatrix<T, ROWS, COLS>
 {
     #[inline]
