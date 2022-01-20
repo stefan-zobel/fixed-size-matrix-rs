@@ -1,8 +1,63 @@
 //! MulAssign implementations
 
-use crate::matrix_mul::*;
 use crate::matrix::*;
+use crate::matrix_mul::*;
+use std::marker::PhantomData;
 use std::ops::{Add, Mul, MulAssign};
+
+struct Mult<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize> {
+    phantom: PhantomData<T>,
+}
+
+impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mult<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>
+where
+    T: Mul<Output = T> + Add<Output = T>,
+{
+    //noinspection ALL
+    #[inline]
+    fn mul_ref_s_ref_s(
+        lhs: &SMatrix<T, ROWS_LEFT, COLS_LEFT>,
+        rhs: &SMatrix<T, COLS_LEFT, COLS_RIGHT>,
+    ) -> SMatrix<T, ROWS_LEFT, COLS_RIGHT> {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_stack();
+        multiply(lhs.array(), rhs.array(), c.array_mut());
+        c
+    }
+
+    //noinspection ALL
+    #[inline]
+    fn mul_ref_s_ref_h(
+        lhs: &SMatrix<T, ROWS_LEFT, COLS_LEFT>,
+        rhs: &HMatrix<T, COLS_LEFT, COLS_RIGHT>,
+    ) -> HMatrix<T, ROWS_LEFT, COLS_RIGHT> {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
+        multiply(lhs.array(), rhs.array(), c.array_mut());
+        c
+    }
+
+    //noinspection ALL
+    #[inline]
+    fn mul_ref_h_ref_h(
+        lhs: &HMatrix<T, ROWS_LEFT, COLS_LEFT>,
+        rhs: &HMatrix<T, COLS_LEFT, COLS_RIGHT>,
+    ) -> HMatrix<T, ROWS_LEFT, COLS_RIGHT> {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
+        multiply(lhs.array(), rhs.array(), c.array_mut());
+        c
+    }
+
+    //noinspection ALL
+    #[inline]
+    fn mul_ref_h_ref_s(
+        lhs: &HMatrix<T, ROWS_LEFT, COLS_LEFT>,
+        rhs: &SMatrix<T, COLS_LEFT, COLS_RIGHT>,
+    ) -> HMatrix<T, ROWS_LEFT, COLS_RIGHT> {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
+        multiply(lhs.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
 
 // 17) &mut SMatrix * SMatrix
 impl<T: Numeric, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
@@ -15,9 +70,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_stack();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_s_ref_s(self, &rhs)
     }
 }
 
@@ -32,9 +85,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_s_ref_h(self, &rhs)
     }
 }
 
@@ -49,9 +100,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: &SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_stack();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_s_ref_s(self, rhs)
     }
 }
 
@@ -66,9 +115,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: &HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_s_ref_h(self, rhs)
     }
 }
 
@@ -83,9 +130,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_h(self, &rhs)
     }
 }
 
@@ -100,9 +145,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: &HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_h(self, rhs)
     }
 }
 
@@ -117,9 +160,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_s(self, &rhs)
     }
 }
 
@@ -134,9 +175,7 @@ where
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: &SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
-        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
-        multiply(self.array(), rhs.array(), c.array_mut());
-        c
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_s(self, rhs)
     }
 }
 
@@ -148,7 +187,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: Self) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_s(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -159,7 +198,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: &Self) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_s(self, rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -170,7 +209,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: HMatrix<T, ROWS, ROWS>) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_h(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -181,7 +220,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: &HMatrix<T, ROWS, ROWS>) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_h(self, rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -192,7 +231,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: Self) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_h(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -203,7 +242,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: &Self) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_h(self, rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -214,7 +253,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: SMatrix<T, ROWS, ROWS>) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_s(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
@@ -225,7 +264,7 @@ where
     T: Mul<Output = T> + Add<Output = T>,
 {
     fn mul_assign(&mut self, rhs: &SMatrix<T, ROWS, ROWS>) {
-        let res = self.clone() * rhs;
+        let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_s(self, rhs);
         self.array_mut().copy_from_slice(res.array());
     }
 }
