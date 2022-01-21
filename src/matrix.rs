@@ -110,6 +110,18 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     }
 }
 
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Default for SMatrix<T, ROWS, COLS> {
+    fn default() -> Self {
+        MF::<T, ROWS, COLS>::new_stack()
+    }
+}
+
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Default for HMatrix<T, ROWS, COLS> {
+    fn default() -> Self {
+        MF::<T, ROWS, COLS>::new_heap()
+    }
+}
+
 #[cfg(test)]
 mod types_tests {
     use super::*;
