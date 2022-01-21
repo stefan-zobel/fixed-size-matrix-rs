@@ -4,6 +4,13 @@ pub mod matrix;
 pub mod matrix_index;
 pub mod matrix_mul;
 pub mod matrix_mul_assign;
+pub mod scalar_mul_f32;
+pub mod scalar_mul_f64;
+pub mod scalar_mul_i8;
+pub mod scalar_mul_i16;
+pub mod scalar_mul_i32;
+pub mod scalar_mul_i64;
+pub mod scalar_mul_i128;
 
 #[cfg(test)]
 mod lib_tests {

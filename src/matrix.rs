@@ -1,8 +1,12 @@
 //! Basic matrix arithmetic using const generics
 
 use std::marker::PhantomData;
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
+/// All types for which the operators `+`, `+=`, `*`, `*=`,
+/// `-` (unary negation), `-` (binary minus) and `-=` are
+/// defined and where the output type of `+=`, `*=` and `-=`
+/// is `T` again.
 pub trait Arithmetic<T>:
     Sized
     + Add<Output = T>
@@ -27,8 +31,9 @@ impl<
 {
 }
 
+/// All types which are `Copy` and `Default` in addition
+/// to being `Arithmetic`.
 pub trait Numeric<T>: Copy + Default + Arithmetic<T> {}
-
 impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 
 /// A Matrix allocated on the stack
