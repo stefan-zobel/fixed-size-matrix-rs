@@ -115,7 +115,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         }
     }
 
-    /// Create a identity matrix on the stack
+    /// Create an identity matrix on the stack
     #[inline]
     pub fn unit_stack() -> SMatrix<T, ROWS, ROWS>
     where
@@ -128,7 +128,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         m
     }
 
-    /// Create a identity matrix on the heap
+    /// Create an identity matrix on the heap
     #[inline]
     pub fn unit_heap() -> HMatrix<T, ROWS, ROWS>
     where
