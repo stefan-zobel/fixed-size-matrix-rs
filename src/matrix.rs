@@ -31,7 +31,6 @@ impl<
             + Sub<Output = T>
             + SubAssign
             + FromStr
-            + Debug,
     > Arithmetic<T> for T
 {
 }
