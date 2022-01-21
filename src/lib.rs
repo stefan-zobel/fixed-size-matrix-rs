@@ -1,19 +1,19 @@
 //! Basic matrix arithmetic using const generics
 
 pub mod matrix;
-pub mod matrix_index;
-pub mod matrix_mul;
-pub mod matrix_mul_assign;
-pub mod mul_to_heap;
-pub mod mul_to_stack;
-pub mod scalar_mul_f32;
-pub mod scalar_mul_f64;
-pub mod scalar_mul_i128;
-pub mod scalar_mul_i16;
-pub mod scalar_mul_i32;
-pub mod scalar_mul_i64;
-pub mod scalar_mul_i8;
-pub mod scalar_mul_inplace;
+mod matrix_index;
+mod matrix_mul;
+mod matrix_mul_assign;
+mod mul_to_heap;
+mod mul_to_stack;
+mod scalar_mul_f32;
+mod scalar_mul_f64;
+mod scalar_mul_i128;
+mod scalar_mul_i16;
+mod scalar_mul_i32;
+mod scalar_mul_i64;
+mod scalar_mul_i8;
+mod scalar_mul_inplace;
 
 #[cfg(test)]
 mod lib_tests {

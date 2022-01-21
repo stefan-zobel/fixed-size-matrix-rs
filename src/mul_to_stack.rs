@@ -1,5 +1,7 @@
 //! SMatrix * HMatrix -> SMatrix
+//!
 //! HMatrix * HMatrix -> SMatrix
+//!
 //! HMatrix * SMatrix -> SMatrix
 
 use crate::matrix::*;
