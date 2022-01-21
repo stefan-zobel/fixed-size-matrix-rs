@@ -32,7 +32,7 @@ impl<
 }
 
 /// All types which are `Copy` and `Default` in addition
-/// to being `Arithmetic`.
+/// to being [Arithmetic](Arithmetic).
 pub trait Numeric<T>: Copy + Default + Arithmetic<T> {}
 impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 

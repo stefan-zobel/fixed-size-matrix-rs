@@ -4,6 +4,8 @@ pub mod matrix;
 pub mod matrix_index;
 pub mod matrix_mul;
 pub mod matrix_mul_assign;
+pub mod mul_to_heap;
+pub mod mul_to_stack;
 pub mod scalar_mul_f32;
 pub mod scalar_mul_f64;
 pub mod scalar_mul_i128;
