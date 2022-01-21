@@ -137,6 +137,26 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         }
         m
     }
+
+    #[inline]
+    pub fn diag_stack(diag_val: T) -> SMatrix<T, ROWS, ROWS>
+    where
+        <T as FromStr>::Err: Debug,
+    {
+        let mut m = MF::<T, ROWS, ROWS>::unit_stack();
+        m *= diag_val;
+        m
+    }
+
+    #[inline]
+    pub fn diag_heap(diag_val: T) -> HMatrix<T, ROWS, ROWS>
+    where
+        <T as FromStr>::Err: Debug,
+    {
+        let mut m = MF::<T, ROWS, ROWS>::unit_heap();
+        m *= diag_val;
+        m
+    }
 }
 
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Default for SMatrix<T, ROWS, COLS> {
@@ -191,6 +211,30 @@ mod types_tests {
         assert_eq!(a[1][0], 0);
         assert_eq!(b[0][0], 1);
         assert_eq!(b[1][1], 1);
+        assert_eq!(b[0][1], 0);
+        assert_eq!(b[1][0], 0);
+    }
+
+    #[test]
+    fn test_diag() {
+        let a = MF::<f32, 2, 2>::diag_stack(5.0);
+        let b = MF::<f64, 2, 2>::diag_heap(3.0);
+        assert_eq!(a[0][0], 5.0);
+        assert_eq!(a[1][1], 5.0);
+        assert_eq!(a[0][1], 0.0);
+        assert_eq!(a[1][0], 0.0);
+        assert_eq!(b[0][0], 3.0);
+        assert_eq!(b[1][1], 3.0);
+        assert_eq!(b[0][1], 0.0);
+        assert_eq!(b[1][0], 0.0);
+        let a = MF::<i8, 2, 2>::diag_stack(8);
+        let b = MF::<i8, 2, 2>::diag_heap(2);
+        assert_eq!(a[0][0], 8);
+        assert_eq!(a[1][1], 8);
+        assert_eq!(a[0][1], 0);
+        assert_eq!(a[1][0], 0);
+        assert_eq!(b[0][0], 2);
+        assert_eq!(b[1][1], 2);
         assert_eq!(b[0][1], 0);
         assert_eq!(b[1][0], 0);
     }
