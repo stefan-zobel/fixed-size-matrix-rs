@@ -18,7 +18,6 @@ pub trait Arithmetic<T>:
     + Neg<Output = T>
     + Sub<Output = T>
     + SubAssign
-    + FromStr
 {
 }
 
@@ -29,8 +28,7 @@ impl<
             + MulAssign
             + Neg<Output = T>
             + Sub<Output = T>
-            + SubAssign
-            + FromStr
+            + SubAssign,
     > Arithmetic<T> for T
 {
 }
@@ -119,6 +117,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     #[inline]
     pub fn unit_stack() -> SMatrix<T, ROWS, ROWS>
     where
+        T: FromStr,
         <T as FromStr>::Err: Debug,
     {
         let mut m = MF::<T, ROWS, ROWS>::new_stack();
@@ -132,6 +131,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     #[inline]
     pub fn unit_heap() -> HMatrix<T, ROWS, ROWS>
     where
+        T: FromStr,
         <T as FromStr>::Err: Debug,
     {
         let mut m = MF::<T, ROWS, ROWS>::new_heap();
@@ -145,6 +145,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     #[inline]
     pub fn diag_stack(diag_val: T) -> SMatrix<T, ROWS, ROWS>
     where
+        T: FromStr,
         <T as FromStr>::Err: Debug,
     {
         let mut m = MF::<T, ROWS, ROWS>::unit_stack();
@@ -156,6 +157,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     #[inline]
     pub fn diag_heap(diag_val: T) -> HMatrix<T, ROWS, ROWS>
     where
+        T: FromStr,
         <T as FromStr>::Err: Debug,
     {
         let mut m = MF::<T, ROWS, ROWS>::unit_heap();
