@@ -11,7 +11,7 @@ use std::ops::Mul;
 // "impl<T> ForeignTrait<LocalTypeCrateA> for T" is not allowed,
 // because it might conflict with another crate writing
 // "impl<T> ForeignTrait<T> for LocalTypeCrateB" which is always
-// allowed
+// allowed. See also https://www.jstuber.net/2019/04/17/scalar-multiplication-in-rust/
 
 #[inline]
 fn scalar_mul_f64<const ROWS: usize, const COLS: usize>(
