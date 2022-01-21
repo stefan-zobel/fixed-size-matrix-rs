@@ -1,5 +1,8 @@
 //! Basic matrix arithmetic using const generics
 
+#![warn(missing_docs)]
+#![warn(rust_2018_idioms)]
+
 pub mod matrix;
 mod matrix_index;
 mod matrix_mul;
