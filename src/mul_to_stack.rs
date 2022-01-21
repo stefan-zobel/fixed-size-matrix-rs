@@ -11,6 +11,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
     SMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
     //noinspection ALL
+    /// Multiply a stack matrix with a heap matrix and allocate the result on the stack.
     #[inline]
     pub fn mul_val_to_stack<const COLS_RIGHT: usize>(
         &self,
@@ -22,6 +23,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
     }
 
     //noinspection ALL
+    /// Multiply a stack matrix with a heap matrix and allocate the result on the stack.
     #[inline]
     pub fn mul_ref_to_stack<const COLS_RIGHT: usize>(
         &self,
@@ -37,6 +39,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
     HMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
     //noinspection ALL
+    /// Multiply a heap matrix with a heap matrix and allocate the result on the stack.
     #[inline]
     pub fn mul_heapval_to_stack<const COLS_RIGHT: usize>(
         &self,
@@ -48,6 +51,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
     }
 
     //noinspection ALL
+    /// Multiply a heap matrix with a heap matrix and allocate the result on the stack.
     #[inline]
     pub fn mul_heapref_to_stack<const COLS_RIGHT: usize>(
         &self,
@@ -58,6 +62,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
         c
     }
 
+    /// Multiply a heap matrix with a stack matrix and allocate the result on the stack.
     #[inline]
     pub fn mul_stackval_to_stack<const COLS_RIGHT: usize>(
         &self,
@@ -68,6 +73,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
         c
     }
 
+    /// Multiply a heap matrix with a stack matrix and allocate the result on the stack.
     #[inline]
     pub fn mul_stackref_to_stack<const COLS_RIGHT: usize>(
         &self,

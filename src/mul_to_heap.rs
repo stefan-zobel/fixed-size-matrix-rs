@@ -6,6 +6,7 @@ use crate::matrix_mul::multiply;
 impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
     SMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
+    /// Multiply two stack matrices and allocate the result on the heap.
     #[inline]
     pub fn mul_val_to_heap<const COLS_RIGHT: usize>(
         &self,
@@ -16,6 +17,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize>
         c
     }
 
+    /// Multiply two stack matrices and allocate the result on the heap.
     #[inline]
     pub fn mul_ref_to_heap<const COLS_RIGHT: usize>(
         &self,
