@@ -1,7 +1,9 @@
 //! Basic matrix arithmetic using const generics
 
+use std::fmt::Debug;
 use std::marker::PhantomData;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use std::str::FromStr;
 
 /// All types for which the operators `+`, `+=`, `*`, `*=`,
 /// `-` (unary negation), `-` (binary minus) and `-=` are
@@ -16,6 +18,7 @@ pub trait Arithmetic<T>:
     + Neg<Output = T>
     + Sub<Output = T>
     + SubAssign
+    + FromStr
 {
 }
 
@@ -26,7 +29,9 @@ impl<
             + MulAssign
             + Neg<Output = T>
             + Sub<Output = T>
-            + SubAssign,
+            + SubAssign
+            + FromStr
+            + Debug,
     > Arithmetic<T> for T
 {
 }
@@ -82,7 +87,7 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, C
     }
 }
 
-// Matrix Factory
+/// `MF` is the `M`atrix `F`actory
 pub struct MF<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     phantom: PhantomData<T>,
 }
@@ -108,6 +113,30 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
             a: box_,
         }
     }
+
+    #[inline]
+    pub fn unit_stack() -> SMatrix<T, ROWS, ROWS>
+    where
+        <T as FromStr>::Err: Debug,
+    {
+        let mut m = MF::<T, ROWS, ROWS>::new_stack();
+        for i in 0..ROWS {
+            m[i][i] = "1".parse().expect("unable to parse \"1\"");
+        }
+        m
+    }
+
+    #[inline]
+    pub fn unit_heap() -> HMatrix<T, ROWS, ROWS>
+    where
+        <T as FromStr>::Err: Debug,
+    {
+        let mut m = MF::<T, ROWS, ROWS>::new_heap();
+        for i in 0..ROWS {
+            m[i][i] = "1".parse().expect("unable to parse \"1\"");
+        }
+        m
+    }
 }
 
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Default for SMatrix<T, ROWS, COLS> {
@@ -130,5 +159,39 @@ mod types_tests {
     fn test_create() {
         let _a = MF::<f32, 4, 4>::new_stack();
         let _b = MF::<f64, 1500, 1500>::new_heap();
+    }
+
+    #[test]
+    fn test_unit() {
+        let a = MF::<f32, 2, 2>::unit_stack();
+        let b = MF::<f64, 2, 2>::unit_heap();
+        assert_eq!(a[0][0], 1.0);
+        assert_eq!(a[1][1], 1.0);
+        assert_eq!(a[0][1], 0.0);
+        assert_eq!(a[1][0], 0.0);
+        assert_eq!(b[0][0], 1.0);
+        assert_eq!(b[1][1], 1.0);
+        assert_eq!(b[0][1], 0.0);
+        assert_eq!(b[1][0], 0.0);
+        let a = MF::<i8, 2, 2>::unit_stack();
+        let b = MF::<i8, 2, 2>::unit_heap();
+        assert_eq!(a[0][0], 1);
+        assert_eq!(a[1][1], 1);
+        assert_eq!(a[0][1], 0);
+        assert_eq!(a[1][0], 0);
+        assert_eq!(b[0][0], 1);
+        assert_eq!(b[1][1], 1);
+        assert_eq!(b[0][1], 0);
+        assert_eq!(b[1][0], 0);
+        let a = MF::<i128, 2, 2>::unit_stack();
+        let b = MF::<i128, 2, 2>::unit_heap();
+        assert_eq!(a[0][0], 1);
+        assert_eq!(a[1][1], 1);
+        assert_eq!(a[0][1], 0);
+        assert_eq!(a[1][0], 0);
+        assert_eq!(b[0][0], 1);
+        assert_eq!(b[1][1], 1);
+        assert_eq!(b[0][1], 0);
+        assert_eq!(b[1][0], 0);
     }
 }
