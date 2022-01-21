@@ -92,6 +92,7 @@ pub struct MF<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
 }
 
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
+    /// Create a new matrix initialized with zeros on the stack
     #[inline]
     pub fn new_stack() -> SMatrix<T, ROWS, COLS> {
         SMatrix {
@@ -101,6 +102,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         }
     }
 
+    /// Create a new matrix initialized with zeros on the heap
     #[inline]
     pub fn new_heap() -> HMatrix<T, ROWS, COLS> {
         let slice = vec![[T::default(); COLS]; ROWS].into_boxed_slice();
@@ -113,6 +115,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         }
     }
 
+    /// Create a identity matrix on the stack
     #[inline]
     pub fn unit_stack() -> SMatrix<T, ROWS, ROWS>
     where
@@ -125,6 +128,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         m
     }
 
+    /// Create a identity matrix on the heap
     #[inline]
     pub fn unit_heap() -> HMatrix<T, ROWS, ROWS>
     where
@@ -137,6 +141,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         m
     }
 
+    /// Create a diagonal matrix with initial diagonal value `diag_val` on the stack
     #[inline]
     pub fn diag_stack(diag_val: T) -> SMatrix<T, ROWS, ROWS>
     where
@@ -147,6 +152,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         m
     }
 
+    /// Create a diagonal matrix with initial diagonal value `diag_val` on the heap
     #[inline]
     pub fn diag_heap(diag_val: T) -> HMatrix<T, ROWS, ROWS>
     where
