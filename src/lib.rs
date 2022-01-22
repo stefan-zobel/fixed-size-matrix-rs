@@ -1,6 +1,6 @@
 //! Basic matrix arithmetic using const generics
 
-#![crate_name="const_matrix"]
+#![crate_name = "const_matrix"]
 #![warn(missing_docs)]
 #![warn(rust_2018_idioms)]
 
@@ -10,6 +10,7 @@ mod matrix_index;
 mod matrix_mul;
 mod matrix_mul_assign;
 mod matrix_neg;
+mod matrix_sub;
 mod mul_to_heap;
 mod mul_to_stack;
 mod scalar_mul_f32;
