@@ -166,6 +166,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
 
 // A1) SMatrix *= SMatrix
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<Self> for SMatrix<T, ROWS, ROWS> {
+    #[inline]
     fn mul_assign(&mut self, rhs: Self) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_s(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -174,6 +175,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<Self> for SMatrix<T, ROWS, ROWS
 
 // A2) SMatrix *= &SMatrix
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<&Self> for SMatrix<T, ROWS, ROWS> {
+    #[inline]
     fn mul_assign(&mut self, rhs: &Self) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_s(self, rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -184,6 +186,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<&Self> for SMatrix<T, ROWS, ROW
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<HMatrix<T, ROWS, ROWS>>
     for SMatrix<T, ROWS, ROWS>
 {
+    #[inline]
     fn mul_assign(&mut self, rhs: HMatrix<T, ROWS, ROWS>) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_h(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -194,6 +197,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<HMatrix<T, ROWS, ROWS>>
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<&HMatrix<T, ROWS, ROWS>>
     for SMatrix<T, ROWS, ROWS>
 {
+    #[inline]
     fn mul_assign(&mut self, rhs: &HMatrix<T, ROWS, ROWS>) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_s_ref_h(self, rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -202,6 +206,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<&HMatrix<T, ROWS, ROWS>>
 
 // B1) HMatrix *= HMatrix
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<Self> for HMatrix<T, ROWS, ROWS> {
+    #[inline]
     fn mul_assign(&mut self, rhs: Self) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_h(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -210,6 +215,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<Self> for HMatrix<T, ROWS, ROWS
 
 // B2) HMatrix *= &HMatrix
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<&Self> for HMatrix<T, ROWS, ROWS> {
+    #[inline]
     fn mul_assign(&mut self, rhs: &Self) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_h(self, rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -220,6 +226,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<&Self> for HMatrix<T, ROWS, ROW
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<SMatrix<T, ROWS, ROWS>>
     for HMatrix<T, ROWS, ROWS>
 {
+    #[inline]
     fn mul_assign(&mut self, rhs: SMatrix<T, ROWS, ROWS>) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_s(self, &rhs);
         self.array_mut().copy_from_slice(res.array());
@@ -230,6 +237,7 @@ impl<T: Numeric<T>, const ROWS: usize> MulAssign<SMatrix<T, ROWS, ROWS>>
 impl<T: Numeric<T>, const ROWS: usize> MulAssign<&SMatrix<T, ROWS, ROWS>>
     for HMatrix<T, ROWS, ROWS>
 {
+    #[inline]
     fn mul_assign(&mut self, rhs: &SMatrix<T, ROWS, ROWS>) {
         let res = Mult::<T, ROWS, ROWS, ROWS>::mul_ref_h_ref_s(self, rhs);
         self.array_mut().copy_from_slice(res.array());
