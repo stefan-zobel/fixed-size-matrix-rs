@@ -1,5 +1,5 @@
 [package]
-name = "fixed-size-matrix-rs"
+name = "const_matrix"
 version = "0.1.0"
 edition = "2021"
 

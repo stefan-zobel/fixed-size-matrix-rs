@@ -1,9 +1,11 @@
 //! Basic matrix arithmetic using const generics
 
+#![crate_name="const_matrix"]
 #![warn(missing_docs)]
 #![warn(rust_2018_idioms)]
 
 pub mod matrix;
+mod matrix_add;
 mod matrix_index;
 mod matrix_mul;
 mod matrix_mul_assign;
