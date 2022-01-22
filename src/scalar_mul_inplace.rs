@@ -15,7 +15,8 @@ fn mul_assign_scalar<T: Numeric<T>, const ROWS: usize, const COLS: usize>(
     }
 }
 
-// SMatrix *= Numeric<T>
+// A0) SMatrix *= Numeric<T>
+/// Inplace scalar multiplication for [SMatrix](SMatrix) implemented as `MulAssign`.
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T> for SMatrix<T, ROWS, COLS> {
     #[inline]
     fn mul_assign(&mut self, rhs: T) {
@@ -23,7 +24,8 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T> for SMatr
     }
 }
 
-// HMatrix *= Numeric<T>
+// B0) HMatrix *= Numeric<T>
+/// Inplace scalar multiplication for [HMatrix](HMatrix) implemented as `MulAssign`.
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T> for HMatrix<T, ROWS, COLS> {
     #[inline]
     fn mul_assign(&mut self, rhs: T) {
@@ -31,7 +33,8 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T> for HMatr
     }
 }
 
-// &mut SMatrix *= Numeric<T>
+// A1) &mut SMatrix *= Numeric<T>
+/// Inplace scalar multiplication for a `&mut` [SMatrix](SMatrix) implemented as `MulAssign`.
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T>
     for &mut SMatrix<T, ROWS, COLS>
 {
@@ -41,7 +44,8 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T>
     }
 }
 
-// &mut HMatrix *= Numeric<T>
+// B1) &mut HMatrix *= Numeric<T>
+/// Inplace scalar multiplication for a `&mut` [HMatrix](HMatrix) implemented as `MulAssign`.
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MulAssign<T>
     for &mut HMatrix<T, ROWS, COLS>
 {

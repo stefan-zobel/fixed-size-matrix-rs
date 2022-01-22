@@ -58,7 +58,7 @@ pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: Box<[[T; COLS]; ROWS]>,
 }
 
-// Array access SMatrix
+// crate-internal array access for SMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS> {
     #[inline]
     pub(crate) fn array(&'a self) -> &'a [[T; COLS]; ROWS] {
@@ -71,7 +71,7 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, C
     }
 }
 
-// Array access HMatrix
+// crate-internal array access for HMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS> {
     #[inline]
     pub(crate) fn array(&'a self) -> &'a [[T; COLS]; ROWS] {
