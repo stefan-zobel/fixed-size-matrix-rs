@@ -12,6 +12,7 @@ mod matrix_mul;
 mod matrix_mul_assign;
 mod matrix_neg;
 mod matrix_sub;
+mod matrix_sub_assign;
 mod mul_to_heap;
 mod mul_to_stack;
 mod scalar_mul_f32;
