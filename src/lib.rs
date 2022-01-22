@@ -6,6 +6,7 @@
 
 pub mod matrix;
 mod matrix_add;
+mod matrix_add_assign;
 mod matrix_index;
 mod matrix_mul;
 mod matrix_mul_assign;
