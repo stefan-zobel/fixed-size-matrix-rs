@@ -1,6 +1,18 @@
 [package]
 name = "const_matrix"
 version = "0.1.0"
-edition = "2021"
+edition = "2018"
+description = """
+Basic arithmetic for compile-time-sized matrices either allocated
+on the stack or on the heap using const generics. Both matrix types
+are fully interoperable with each other.
+"""
+rust-version = "1.51"
+authors = ["Stefan Zobel <spliterator@gmail.com>"]
+license = "Apache-2.0 OR MIT"
+keywords = ["linear-agebra", "sized", "matrix", "const-generics", "math"]
+categories = ["Mathematics", "Data structures", "Science"]
+repository = "https://github.com/stefan-zobel/fixed-size-matrix-rs"
+##homepage =
 
 [dependencies]
