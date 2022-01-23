@@ -1,4 +1,4 @@
-//! Basic matrix arithmetic using const generics
+//! Basic matrix arithmetic for heap and stack allocated matrices using const generics
 
 #![crate_name = "const_matrix"]
 #![warn(missing_docs)]

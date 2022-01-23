@@ -1,4 +1,5 @@
-//! Basic matrix arithmetic using const generics
+//! Basic arithmetic for compile-time-sized matrices either allocated
+//! on the stack or on the heap using const generics
 
 use std::fmt::Debug;
 use std::marker::PhantomData;
@@ -38,13 +39,13 @@ impl<
 pub trait Numeric<T>: Copy + Default + Arithmetic<T> {}
 impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 
-/// A matrix allocated on the stack.
+/// A matrix which is allocated on the stack.
 #[derive(Debug, Clone)]
 pub struct SMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: [[T; COLS]; ROWS],
 }
 
-/// A matrix allocated on the heap.
+/// A matrix which is allocated on the heap.
 #[derive(Debug, Clone)]
 pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: Box<[[T; COLS]; ROWS]>,
@@ -76,7 +77,7 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, C
     }
 }
 
-/// `MF` is the `M`atrix `F`actory
+/// `MF` is the `M`atrix `F`actory used for the creation of new matrices.
 pub struct MF<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     phantom: PhantomData<T>,
 }
