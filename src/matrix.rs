@@ -352,4 +352,22 @@ mod types_tests {
         assert_eq!(b[2][1], 6.0);
         println!("TRANS heap: {:?}", b);
     }
+
+    #[test]
+    fn test_matrix_of_matrices() {
+        let a = MF::<f32, 2, 2>::unit_stack();
+        let b = a.clone();
+        let c = a.clone();
+        let d = a.clone();
+        let mut matrix_of_matrices = MF::<SMatrix<f32, 2, 2>, 2, 2>::new_stack();
+        matrix_of_matrices[0][0] = a;
+        matrix_of_matrices[0][1] = b;
+        matrix_of_matrices[1][0] = c;
+        matrix_of_matrices[1][1] = d;
+        let mut another_m_of_m = matrix_of_matrices.trans();
+        let scalar = MF::<f32, 2, 2>::diag_stack(2.0);
+        another_m_of_m *= scalar;
+        let res = matrix_of_matrices * another_m_of_m;
+        println!("THIS IS THE CLIMAX!: {:?}", res);
+    }
 }
