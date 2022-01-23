@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["matrix","Basic arithmetic for compile-time-sized matrices either allocated on the stack (SMatrix) or on the heap (HMatrix) using const generics. Both matrix types are fully interoperable with each other."]]});
