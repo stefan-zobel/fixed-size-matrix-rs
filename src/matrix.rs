@@ -42,7 +42,9 @@ pub trait Numeric<T>: Copy + Default + Arithmetic<T> {}
 impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 
 /// A matrix which is allocated on the stack.
-#[derive(Debug, Clone)]
+/// An `SMatrix` is itself [Numeric](Numeric), so that its
+/// elements can also be other stack-allocated matrices.
+#[derive(Debug, Copy, Clone)]
 pub struct SMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: [[T; COLS]; ROWS],
 }
