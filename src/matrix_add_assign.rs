@@ -158,11 +158,12 @@ mod add_assign_tests {
         let d2 = MF::<f32, 4, 4>::new_stack();
         let _d = d1 + d2;
 
-        // this also doesn't compile
-        /*
         let e1 = MF::<f32, 4, 4>::new_stack();
         let e2 = &mut MF::<f32, 4, 4>::new_stack();
         let _e = e1 + e2;
+
+        // this also doesn't compile
+        /*
         let f1 = &mut MF::<f32, 4, 4>::new_stack();
         let f2 = &mut MF::<f32, 4, 4>::new_stack();
         let _f = f1 + f2;
