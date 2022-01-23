@@ -378,5 +378,22 @@ mod types_tests {
         another_m_of_m *= scalar;
         let res = matrix_of_matrices * another_m_of_m;
         println!("THIS IS THE CLIMAX!: {:?}", res);
+
+        let mut matrix_of_matrix_of_matrices =
+            MF::<SMatrix<SMatrix<f32, 2, 2>, 2, 2>, 2, 2>::new_stack();
+        matrix_of_matrix_of_matrices[0][0] = matrix_of_matrices.clone();
+        matrix_of_matrix_of_matrices[0][1] = another_m_of_m.clone();
+        matrix_of_matrix_of_matrices[1][0] = another_m_of_m.clone();
+        matrix_of_matrix_of_matrices[1][1] = matrix_of_matrices.clone();
+        let mut another_m_of_m_of_m = matrix_of_matrix_of_matrices.trans();
+        let scalar = MF::<f32, 2, 2>::diag_stack(3.0);
+        let mut rhs = MF::<SMatrix<f32, 2, 2>, 2, 2>::new_stack();
+        rhs[0][0] = scalar.clone();
+        rhs[0][1] = scalar.clone();
+        rhs[1][0] = scalar.clone();
+        rhs[1][1] = scalar.clone();
+        another_m_of_m_of_m *= rhs;
+        let res = matrix_of_matrix_of_matrices * another_m_of_m_of_m;
+        println!("THIS IS THE EVEN BETTER CLIMAX!: {:?}", res);
     }
 }
