@@ -97,7 +97,20 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     }
 }
 
-// 20) &mut SMatrix * &HMatrix
+// 20) &mut SMatrix * &mut SMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut SMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = SMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_s_ref_s(self, rhs)
+    }
+}
+
+// 21) &mut SMatrix * &HMatrix
 impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut SMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
@@ -110,7 +123,20 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     }
 }
 
-// 21) &mut HMatrix * HMatrix
+// 22) &mut SMatrix * &mut HMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut SMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_s_ref_h(self, rhs)
+    }
+}
+
+// 23) &mut HMatrix * HMatrix
 impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut HMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
@@ -123,7 +149,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     }
 }
 
-// 22) &mut HMatrix * &HMatrix
+// 24) &mut HMatrix * &HMatrix
 impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut HMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
@@ -136,7 +162,20 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     }
 }
 
-// 23) &mut HMatrix * SMatrix
+// 25) &mut HMatrix * &mut HMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut HMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut HMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_h(self, rhs)
+    }
+}
+
+// 26) &mut HMatrix * SMatrix
 impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut HMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
@@ -149,7 +188,7 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     }
 }
 
-// 24) &mut HMatrix * &SMatrix
+// 27) &mut HMatrix * &SMatrix
 impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
     Mul<&SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut HMatrix<T, ROWS_LEFT, COLS_LEFT>
 {
@@ -158,6 +197,19 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     //noinspection ALL
     #[inline]
     fn mul(self, rhs: &SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_s(self, rhs)
+    }
+}
+
+// 28) &mut HMatrix * &mut SMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut SMatrix<T, COLS_LEFT, COLS_RIGHT>> for &mut HMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
         Mult::<T, ROWS_LEFT, COLS_LEFT, COLS_RIGHT>::mul_ref_h_ref_s(self, rhs)
     }
 }
@@ -285,10 +337,8 @@ mod mul_assign_tests {
         let _e = e1 * e2;
         */
 
-        /*
         let f1 = &mut MF::<f32, 4, 4>::new_stack();
         let f2 = &mut MF::<f32, 4, 4>::new_stack();
         let _f = f1 * f2;
-        */
-     }
+    }
 }
