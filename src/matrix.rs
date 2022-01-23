@@ -240,6 +240,22 @@ mod types_tests {
     }
 
     #[test]
+    fn test_create_stack_from_literal() {
+        let a = SMatrix::new([[1, 2, 3], [4, 5, 6]]);
+        let b = SMatrix::new([[7, 8], [9, 10], [11, 12]]);
+        let c = a * b;
+        println!("C (stack matrix): {:?}", c);
+    }
+
+    #[test]
+    fn test_create_heap_from_literal() {
+        let a = HMatrix::new([[1, 2, 3], [4, 5, 6]]);
+        let b = HMatrix::new([[7, 8], [9, 10], [11, 12]]);
+        let c = a * b;
+        println!("C (heap matrix): {:?}", c);
+    }
+
+    #[test]
     fn test_unit() {
         let a = MF::<f32, 2, 2>::unit_stack();
         let b = MF::<f64, 2, 2>::unit_heap();
