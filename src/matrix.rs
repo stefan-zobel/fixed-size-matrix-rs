@@ -38,23 +38,15 @@ impl<
 pub trait Numeric<T>: Copy + Default + Arithmetic<T> {}
 impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 
-/// A Matrix allocated on the stack
+/// A matrix allocated on the stack.
 #[derive(Debug, Clone)]
 pub struct SMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
-    #[allow(unused)]
-    rows: usize,
-    #[allow(unused)]
-    cols: usize,
     a: [[T; COLS]; ROWS],
 }
 
-/// A Matrix allocated on the heap
+/// A matrix allocated on the heap.
 #[derive(Debug, Clone)]
 pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
-    #[allow(unused)]
-    rows: usize,
-    #[allow(unused)]
-    cols: usize,
     a: Box<[[T; COLS]; ROWS]>,
 }
 
