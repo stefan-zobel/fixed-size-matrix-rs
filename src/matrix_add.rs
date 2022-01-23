@@ -426,7 +426,7 @@ mod add_tests {
         let _bb = &b1 + b3.clone();
         let _bb = b1.clone() + &b3;
         let _bb = b1 + b3;
-
+        // &mut + value
         let mut c1 = MF::<f32, 4, 4>::new_stack();
         let c2 = MF::<f32, 4, 4>::new_stack();
         let _c = &mut c1 + c2;
