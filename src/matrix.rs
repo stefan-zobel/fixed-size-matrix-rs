@@ -96,9 +96,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         let slice = vec![[T::default(); COLS]; ROWS].into_boxed_slice();
         let ptr = Box::into_raw(slice) as *mut [[T; COLS]; ROWS];
         let box_ = unsafe { Box::from_raw(ptr) };
-        HMatrix {
-            a: box_,
-        }
+        HMatrix { a: box_ }
     }
 
     /// Create an identity matrix on the stack.
