@@ -1,5 +1,7 @@
 //! Basic arithmetic for compile-time-sized matrices either allocated
-//! on the stack or on the heap using const generics
+//! on the stack ([SMatrix](SMatrix)) or on the heap ([HMatrix](HMatrix))
+//! using const generics. Both matrix types are fully interoperable with
+//! each other.
 
 use std::fmt::Debug;
 use std::marker::PhantomData;
@@ -51,8 +53,16 @@ pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: Box<[[T; COLS]; ROWS]>,
 }
 
-// crate-internal array access for SMatrix
+// to_heap() and crate-internal array access for SMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS> {
+    /// Creates a heap-allocated copy of this stack-allocated matrix.
+    #[inline]
+    pub fn to_heap(&self) -> HMatrix<T, ROWS, COLS> {
+        let mut heap_copy = MF::<T, ROWS, COLS>::new_heap();
+        heap_copy.array_mut().copy_from_slice(self.array());
+        heap_copy
+    }
+
     #[inline]
     pub(crate) fn array(&'a self) -> &'a [[T; COLS]; ROWS] {
         &self.a
@@ -64,8 +74,16 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, C
     }
 }
 
-// crate-internal array access for HMatrix
+// to_stack() and crate-internal array access for HMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS> {
+    /// Creates a stack-allocated copy of this heap-allocated matrix.
+    #[inline]
+    pub fn to_stack(&self) -> SMatrix<T, ROWS, COLS> {
+        let mut stack_copy = MF::<T, ROWS, COLS>::new_stack();
+        stack_copy.array_mut().copy_from_slice(self.array());
+        stack_copy
+    }
+
     #[inline]
     pub(crate) fn array(&'a self) -> &'a [[T; COLS]; ROWS] {
         self.a.as_ref()

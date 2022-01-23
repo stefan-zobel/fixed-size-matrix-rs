@@ -3,4 +3,5 @@
 # const_matrix-rs
 
 Basic arithmetic for compile-time-sized matrices either allocated on the stack
-or on the heap using const generics
+(`SMatrix`) or on the heap (`HMatrix`) using const generics. Both matrix types
+are fully interoperable with each other.
