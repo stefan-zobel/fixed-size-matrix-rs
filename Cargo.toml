@@ -13,6 +13,6 @@ license = "Apache-2.0 OR MIT"
 keywords = ["linear-agebra", "sized", "matrix", "const-generics", "math"]
 categories = ["Mathematics", "Data structures", "Science"]
 repository = "https://github.com/stefan-zobel/fixed-size-matrix-rs"
-##homepage =
+homepage = "https://stefan-zobel.github.io/fixed-size-matrix-rs/"
 
 [dependencies]
