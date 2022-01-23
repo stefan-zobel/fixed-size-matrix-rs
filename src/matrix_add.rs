@@ -253,7 +253,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<SMatrix<T, ROWS, C
     }
 }
 
-// 16) &HMatrix + &Matrix
+// 16) &HMatrix + &SMatrix
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&SMatrix<T, ROWS, COLS>>
     for &HMatrix<T, ROWS, COLS>
 {
@@ -398,7 +398,7 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&HMatrix<T, ROWS, 
 
 // 25) SMatrix + &mut SMatrix
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut SMatrix<T, ROWS, COLS>>
-for SMatrix<T, ROWS, COLS>
+    for SMatrix<T, ROWS, COLS>
 {
     type Output = SMatrix<T, ROWS, COLS>;
 
@@ -413,7 +413,7 @@ for SMatrix<T, ROWS, COLS>
 
 // 26) SMatrix + &mut HMatrix
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut HMatrix<T, ROWS, COLS>>
-for SMatrix<T, ROWS, COLS>
+    for SMatrix<T, ROWS, COLS>
 {
     type Output = SMatrix<T, ROWS, COLS>;
 
@@ -428,7 +428,7 @@ for SMatrix<T, ROWS, COLS>
 
 // 27) HMatrix + &mut HMatrix
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut HMatrix<T, ROWS, COLS>>
-for HMatrix<T, ROWS, COLS>
+    for HMatrix<T, ROWS, COLS>
 {
     type Output = HMatrix<T, ROWS, COLS>;
 
@@ -443,7 +443,71 @@ for HMatrix<T, ROWS, COLS>
 
 // 28) HMatrix + &mut SMatrix
 impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut SMatrix<T, ROWS, COLS>>
-for HMatrix<T, ROWS, COLS>
+    for HMatrix<T, ROWS, COLS>
+{
+    type Output = HMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn add(self, rhs: &mut SMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_heap();
+        add(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+//
+// lhs: &mut, rhs: &mut
+//
+
+// 29) &mut SMatrix + &mut SMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut SMatrix<T, ROWS, COLS>>
+    for &mut SMatrix<T, ROWS, COLS>
+{
+    type Output = SMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn add(self, rhs: &mut SMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_stack();
+        add(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 30) &mut SMatrix + &mut HMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut HMatrix<T, ROWS, COLS>>
+    for &mut SMatrix<T, ROWS, COLS>
+{
+    type Output = SMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn add(self, rhs: &mut HMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_stack();
+        add(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 31) &mut HMatrix + &mut HMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut HMatrix<T, ROWS, COLS>>
+    for &mut HMatrix<T, ROWS, COLS>
+{
+    type Output = HMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn add(self, rhs: &mut HMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_heap();
+        add(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 32) &mut HMatrix + &mut SMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&mut SMatrix<T, ROWS, COLS>>
+    for &mut HMatrix<T, ROWS, COLS>
 {
     type Output = HMatrix<T, ROWS, COLS>;
 
