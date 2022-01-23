@@ -53,9 +53,16 @@ pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: Box<[[T; COLS]; ROWS]>,
 }
 
-// to_heap() and crate-internal array access for SMatrix
+// new(), to_heap() and crate-internal array access for SMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS> {
+    /// Creates a new stack-allocated matrix from the given initial values.
+    #[inline]
+    pub fn new(array: [[T; COLS]; ROWS]) -> Self {
+        SMatrix { a: array }
+    }
+
     /// Creates a stack-allocated transpose of this matrix.
+    #[inline]
     pub fn trans(&self) -> SMatrix<T, COLS, ROWS> {
         let mut transposed = MF::<T, COLS, ROWS>::new_stack();
         copy_trans(self.array(), transposed.array_mut());
@@ -81,9 +88,18 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, C
     }
 }
 
-// to_stack() and crate-internal array access for HMatrix
+// new(), to_stack() and crate-internal array access for HMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS> {
+    /// Creates a new stack-allocated matrix from the given initial values.
+    #[inline]
+    pub fn new(array: [[T; COLS]; ROWS]) -> Self {
+        let mut heap = MF::<T, ROWS, COLS>::new_heap();
+        heap.array_mut().copy_from_slice(&array);
+        heap
+    }
+
     /// Creates a heap-allocated transpose of this matrix.
+    #[inline]
     pub fn trans(&self) -> HMatrix<T, COLS, ROWS> {
         let mut transposed = MF::<T, COLS, ROWS>::new_heap();
         copy_trans(self.array(), transposed.array_mut());
@@ -109,6 +125,7 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, C
     }
 }
 
+#[inline]
 fn copy_trans<T: Numeric<T>, const ROWS: usize, const COLS: usize>(
     source: &[[T; COLS]; ROWS],
     target: &mut [[T; ROWS]; COLS],
