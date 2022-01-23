@@ -391,3 +391,44 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Add<&HMatrix<T, ROWS, 
         c
     }
 }
+
+#[cfg(test)]
+mod add_tests {
+    use super::*;
+
+    #[test]
+    fn test_add() {
+        let a1 = MF::<f32, 4, 4>::new_stack();
+        let a2 = MF::<f32, 4, 4>::new_stack();
+        let a3 = MF::<f32, 4, 4>::new_heap();
+        let b1 = MF::<f64, 100, 100>::new_heap();
+        let b2 = MF::<f64, 100, 100>::new_heap();
+        let b3 = MF::<f64, 100, 100>::new_stack();
+        // stack * stack
+        let _a = &a1 + &a2;
+        let _a = &a1 + a2.clone();
+        let _a = a1.clone() + &a2;
+        let _a = a1 + a2;
+        // stack * heap
+        let a1 = MF::<f32, 4, 4>::new_stack();
+        let _aa = &a1 + &a3;
+        let _aa = &a1 + a3.clone();
+        let _aa = a1.clone() + &a3;
+        let _aa = a1 + a3;
+        // heap * heap
+        let _b = &b1 + &b2;
+        let _b = &b1 + b2.clone();
+        let _b = b1.clone() + &b2;
+        let _b = b1 + b2;
+        // heap * stack
+        let b1 = MF::<f64, 100, 100>::new_heap();
+        let _bb = &b1 + &b3;
+        let _bb = &b1 + b3.clone();
+        let _bb = b1.clone() + &b3;
+        let _bb = b1 + b3;
+        // this doesn't (yet) compile
+//        let mut c1 = MF::<f32, 4, 4>::new_stack();
+//        let c2 = MF::<f32, 4, 2>::new_stack();
+//        let _c = &mut c1 + c2;
+    }
+}
