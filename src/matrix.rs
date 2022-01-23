@@ -86,8 +86,6 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
     #[inline]
     pub fn new_stack() -> SMatrix<T, ROWS, COLS> {
         SMatrix {
-            rows: ROWS,
-            cols: COLS,
             a: [[T::default(); COLS]; ROWS],
         }
     }
@@ -99,8 +97,6 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> MF<T, ROWS, COLS> {
         let ptr = Box::into_raw(slice) as *mut [[T; COLS]; ROWS];
         let box_ = unsafe { Box::from_raw(ptr) };
         HMatrix {
-            rows: ROWS,
-            cols: COLS,
             a: box_,
         }
     }
