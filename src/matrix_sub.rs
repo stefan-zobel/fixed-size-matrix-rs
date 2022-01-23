@@ -456,6 +456,70 @@ impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Sub<&mut SMatrix<T, RO
     }
 }
 
+//
+// lhs: &mut, rhs: &mut
+//
+
+// 29) &mut SMatrix - &mut SMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Sub<&mut SMatrix<T, ROWS, COLS>>
+    for &mut SMatrix<T, ROWS, COLS>
+{
+    type Output = SMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn sub(self, rhs: &mut SMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_stack();
+        sub(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 30) &mut SMatrix - &mut HMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Sub<&mut HMatrix<T, ROWS, COLS>>
+    for &mut SMatrix<T, ROWS, COLS>
+{
+    type Output = SMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn sub(self, rhs: &mut HMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_stack();
+        sub(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 31) &mut HMatrix - &mut HMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Sub<&mut HMatrix<T, ROWS, COLS>>
+    for &mut HMatrix<T, ROWS, COLS>
+{
+    type Output = HMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn sub(self, rhs: &mut HMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_heap();
+        sub(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 32) &mut HMatrix - &mut SMatrix
+impl<T: Numeric<T>, const ROWS: usize, const COLS: usize> Sub<&mut SMatrix<T, ROWS, COLS>>
+    for &mut HMatrix<T, ROWS, COLS>
+{
+    type Output = HMatrix<T, ROWS, COLS>;
+
+    //noinspection ALL
+    #[inline]
+    fn sub(self, rhs: &mut SMatrix<T, ROWS, COLS>) -> Self::Output {
+        let mut c = MF::<T, ROWS, COLS>::new_heap();
+        sub(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
 #[cfg(test)]
 mod sub_tests {
     use super::*;
