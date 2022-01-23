@@ -55,6 +55,13 @@ pub struct HMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
 
 // to_heap() and crate-internal array access for SMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, COLS> {
+    /// Creates a stack-allocated transpose of this matrix.
+    pub fn trans(&self) -> SMatrix<T, COLS, ROWS> {
+        let mut transposed = MF::<T, COLS, ROWS>::new_stack();
+        copy_trans(self.array(), transposed.array_mut());
+        transposed
+    }
+
     /// Creates a heap-allocated copy of this stack-allocated matrix.
     #[inline]
     pub fn to_heap(&self) -> HMatrix<T, ROWS, COLS> {
@@ -76,6 +83,13 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> SMatrix<T, ROWS, C
 
 // to_stack() and crate-internal array access for HMatrix
 impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, COLS> {
+    /// Creates a heap-allocated transpose of this matrix.
+    pub fn trans(&self) -> HMatrix<T, COLS, ROWS> {
+        let mut transposed = MF::<T, COLS, ROWS>::new_heap();
+        copy_trans(self.array(), transposed.array_mut());
+        transposed
+    }
+
     /// Creates a stack-allocated copy of this heap-allocated matrix.
     #[inline]
     pub fn to_stack(&self) -> SMatrix<T, ROWS, COLS> {
@@ -92,6 +106,17 @@ impl<'a, T: Numeric<T>, const ROWS: usize, const COLS: usize> HMatrix<T, ROWS, C
     #[inline]
     pub(crate) fn array_mut(&'a mut self) -> &'a mut [[T; COLS]; ROWS] {
         self.a.as_mut()
+    }
+}
+
+fn copy_trans<T: Numeric<T>, const ROWS: usize, const COLS: usize>(
+    source: &[[T; COLS]; ROWS],
+    target: &mut [[T; ROWS]; COLS],
+) {
+    for (i, source_row) in source.iter().enumerate().take(ROWS) {
+        for (j, source_cell) in source_row.iter().enumerate().take(COLS) {
+            target[j][i] = *source_cell;
+        }
     }
 }
 
@@ -253,5 +278,43 @@ mod types_tests {
         assert_eq!(b[1][1], 2);
         assert_eq!(b[0][1], 0);
         assert_eq!(b[1][0], 0);
+    }
+
+    #[test]
+    fn test_transpose_stack() {
+        let mut a = MF::<f64, 2, 3>::new_stack();
+        a[0][0] = 1.0;
+        a[0][1] = 2.0;
+        a[0][2] = 3.0;
+        a[1][0] = 4.0;
+        a[1][1] = 5.0;
+        a[1][2] = 6.0;
+        let b = a.trans();
+        assert_eq!(b[0][0], 1.0);
+        assert_eq!(b[1][0], 2.0);
+        assert_eq!(b[2][0], 3.0);
+        assert_eq!(b[0][1], 4.0);
+        assert_eq!(b[1][1], 5.0);
+        assert_eq!(b[2][1], 6.0);
+        println!("TRANS stack: {:?}", b);
+    }
+
+    #[test]
+    fn test_transpose_heap() {
+        let mut a = MF::<f64, 2, 3>::new_heap();
+        a[0][0] = 1.0;
+        a[0][1] = 2.0;
+        a[0][2] = 3.0;
+        a[1][0] = 4.0;
+        a[1][1] = 5.0;
+        a[1][2] = 6.0;
+        let b = a.trans();
+        assert_eq!(b[0][0], 1.0);
+        assert_eq!(b[1][0], 2.0);
+        assert_eq!(b[2][0], 3.0);
+        assert_eq!(b[0][1], 4.0);
+        assert_eq!(b[1][1], 5.0);
+        assert_eq!(b[2][1], 6.0);
+        println!("TRANS heap: {:?}", b);
     }
 }
