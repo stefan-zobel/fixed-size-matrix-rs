@@ -123,3 +123,49 @@ impl<T: Numeric<T>, const ROWS: usize> AddAssign<&SMatrix<T, ROWS, ROWS>>
         self.array_mut().copy_from_slice(res.array());
     }
 }
+
+#[cfg(test)]
+mod add_assign_tests {
+    use super::*;
+
+    #[test]
+    fn test_add_assign() {
+        let mut a1 = MF::<f32, 4, 4>::new_stack();
+        let a2 = MF::<f32, 4, 4>::new_stack();
+        let a3 = MF::<f32, 4, 4>::new_heap();
+        let a4 = &MF::<f32, 4, 4>::new_stack();
+        let a5 = &MF::<f32, 4, 4>::new_heap();
+        a1 += a2;
+        a1 += a3;
+        a1 += a4;
+        a1 += a5;
+        let mut b1 = MF::<f64, 8, 8>::new_heap();
+        let b2 = MF::<f64, 8, 8>::new_heap();
+        let b3 = MF::<f64, 8, 8>::new_stack();
+        let b4 = &MF::<f64, 8, 8>::new_heap();
+        let b5 = &MF::<f64, 8, 8>::new_stack();
+        b1 += b2;
+        b1 += b3;
+        b1 += b4;
+        b1 += b5;
+
+        // this doesn't (yet) compile
+//        let c1 = &mut MF::<f32, 4, 4>::new_stack();
+//        let c2 = MF::<f32, 4, 4>::new_stack();
+//        c1 += c2;
+
+        let d1 = &mut MF::<f32, 4, 4>::new_stack();
+        let d2 = MF::<f32, 4, 4>::new_stack();
+        let _d = d1 + d2;
+
+        // this also doesn't compile
+        /*
+        let e1 = MF::<f32, 4, 4>::new_stack();
+        let e2 = &mut MF::<f32, 4, 4>::new_stack();
+        let _e = e1 + e2;
+        let f1 = &mut MF::<f32, 4, 4>::new_stack();
+        let f2 = &mut MF::<f32, 4, 4>::new_stack();
+        let _f = f1 + f2;
+        */
+    }
+}
