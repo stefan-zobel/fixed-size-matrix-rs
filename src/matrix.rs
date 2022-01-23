@@ -1,3 +1,10 @@
+// Copyright 2022 Stefan Zobel
+//
+// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
+// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
+// http://opensource.org/licenses/MIT>, at your option. This file may not be
+// copied, modified, or distributed except according to those terms.
+
 //! Basic arithmetic for compile-time-sized matrices either allocated
 //! on the stack ([SMatrix](SMatrix)) or on the heap ([HMatrix](HMatrix))
 //! using const generics. Both matrix types are fully interoperable with
@@ -43,7 +50,9 @@ impl<T: Copy + Default + Arithmetic<T>> Numeric<T> for T {}
 
 /// A matrix which is allocated on the stack.
 /// An `SMatrix` is itself [Numeric](Numeric), so that its
-/// elements can also be other stack-allocated matrices.
+/// elements can also be other stack-allocated matrices which
+/// theoretically could contain `SMatrices` themselves up to
+/// arbitrarily deep finite nesting levels..
 #[derive(Debug, Copy, Clone)]
 pub struct SMatrix<T: Numeric<T>, const ROWS: usize, const COLS: usize> {
     a: [[T; COLS]; ROWS],

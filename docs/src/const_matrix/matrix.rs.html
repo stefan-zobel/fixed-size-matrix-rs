@@ -372,7 +372,23 @@
 <span id="371">371</span>
 <span id="372">372</span>
 <span id="373">373</span>
-</pre><pre class="rust"><code><span class="doccomment">//! Basic arithmetic for compile-time-sized matrices either allocated</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+</pre><pre class="rust"><code><span class="comment">// Copyright 2022 Stefan Zobel</span>
+<span class="comment">//</span>
+<span class="comment">// Licensed under the Apache License, Version 2.0, &lt;LICENSE-APACHE or</span>
+<span class="comment">// http://apache.org/licenses/LICENSE-2.0&gt; or the MIT license &lt;LICENSE-MIT or</span>
+<span class="comment">// http://opensource.org/licenses/MIT&gt;, at your option. This file may not be</span>
+<span class="comment">// copied, modified, or distributed except according to those terms.</span>
+
+<span class="doccomment">//! Basic arithmetic for compile-time-sized matrices either allocated</span>
 <span class="doccomment">//! on the stack ([SMatrix](SMatrix)) or on the heap ([HMatrix](HMatrix))</span>
 <span class="doccomment">//! using const generics. Both matrix types are fully interoperable with</span>
 <span class="doccomment">//! each other.</span>
@@ -417,7 +433,9 @@
 
 <span class="doccomment">/// A matrix which is allocated on the stack.</span>
 <span class="doccomment">/// An `SMatrix` is itself [Numeric](Numeric), so that its</span>
-<span class="doccomment">/// elements can also be other stack-allocated matrices.</span>
+<span class="doccomment">/// elements can also be other stack-allocated matrices which</span>
+<span class="doccomment">/// theoretically could contain `SMatrices` themselves up to</span>
+<span class="doccomment">/// arbitrarily deep finite nesting levels..</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SMatrix</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Numeric</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="kw">const</span> <span class="ident">ROWS</span>: <span class="ident">usize</span>, <span class="kw">const</span> <span class="ident">COLS</span>: <span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="ident">a</span>: [[<span class="ident">T</span>; <span class="ident">COLS</span>]; <span class="ident">ROWS</span>],
