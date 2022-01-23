@@ -263,6 +263,66 @@ impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_R
     }
 }
 
+// 29) SMatrix * &mut SMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut SMatrix<T, COLS_LEFT, COLS_RIGHT>> for SMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = SMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_stack();
+        multiply(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 30) SMatrix * &mut HMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut HMatrix<T, COLS_LEFT, COLS_RIGHT>> for SMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
+        multiply(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 31) HMatrix * &mut HMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut HMatrix<T, COLS_LEFT, COLS_RIGHT>> for HMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut HMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
+        multiply(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
+// 32) HMatrix * &mut SMatrix
+impl<T: Numeric<T>, const ROWS_LEFT: usize, const COLS_LEFT: usize, const COLS_RIGHT: usize>
+    Mul<&mut SMatrix<T, COLS_LEFT, COLS_RIGHT>> for HMatrix<T, ROWS_LEFT, COLS_LEFT>
+{
+    type Output = HMatrix<T, ROWS_LEFT, COLS_RIGHT>;
+
+    //noinspection ALL
+    #[inline]
+    fn mul(self, rhs: &mut SMatrix<T, COLS_LEFT, COLS_RIGHT>) -> Self::Output {
+        let mut c = MF::<T, ROWS_LEFT, COLS_RIGHT>::new_heap();
+        multiply(self.array(), rhs.array(), c.array_mut());
+        c
+    }
+}
+
 #[cfg(test)]
 mod mul_tests {
     use super::*;
