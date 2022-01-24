@@ -14,5 +14,6 @@ keywords = ["linear-agebra", "sized", "matrix", "const-generics", "math"]
 categories = ["Mathematics", "Data structures", "Science"]
 repository = "https://github.com/stefan-zobel/fixed-size-matrix-rs"
 homepage = "https://stefan-zobel.github.io/fixed-size-matrix-rs/"
+exclude = ["/docs"]
 
 [dependencies]
